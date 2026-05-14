@@ -5,83 +5,245 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Steven Python Payroll Calculator</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
+      min-height: 100vh;
       font-family: Arial, sans-serif;
-      background: #0f172a;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.35), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.25), transparent 35%),
+        #020617;
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      padding: 30px;
     }
 
-    .container {
-      text-align: center;
-      background: #1e293b;
+    .card {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .content {
       padding: 50px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      width: 90%;
-      max-width: 600px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: #93c5fd;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      margin-bottom: 22px;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      font-size: 3rem;
+      line-height: 1.05;
+      margin: 0 0 18px;
+    }
+
+    .highlight {
+      color: #60a5fa;
     }
 
     p {
       color: #cbd5e1;
-      margin-bottom: 40px;
       font-size: 1.1rem;
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 35px;
+    }
+
+    .feature {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      padding: 14px;
+      border-radius: 16px;
+      color: #e2e8f0;
+      font-size: 0.95rem;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     .button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      margin: 15px 0;
+      display: inline-block;
+      padding: 15px 22px;
       background: #2563eb;
       color: white;
       text-decoration: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      transition: 0.3s ease;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: 0.25s ease;
     }
 
     .button:hover {
       background: #1d4ed8;
-      transform: scale(1.02);
+      transform: translateY(-3px);
+    }
+
+    .button.secondary {
+      background: transparent;
+      border: 1px solid #475569;
+    }
+
+    .button.secondary:hover {
+      background: #1e293b;
+    }
+
+    .visual {
+      background: linear-gradient(160deg, #1e3a8a, #0f172a);
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .visual::before {
+      content: "$";
+      position: absolute;
+      font-size: 17rem;
+      color: rgba(255, 255, 255, 0.05);
+      font-weight: bold;
+      top: 20px;
+      right: 30px;
+    }
+
+    .paycheck {
+      width: 100%;
+      max-width: 310px;
+      background: white;
+      color: #0f172a;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      transform: rotate(-3deg);
+      z-index: 2;
+    }
+
+    .paycheck h2 {
+      margin: 0 0 18px;
+      color: #1e3a8a;
+      font-size: 1.5rem;
+    }
+
+    .line {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 0;
+      font-size: 0.95rem;
+    }
+
+    .line strong {
+      color: #16a34a;
+    }
+
+    .total {
+      margin-top: 18px;
+      background: #dcfce7;
+      color: #166534;
+      padding: 14px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
 
     .footer {
-      margin-top: 30px;
+      margin-top: 28px;
       color: #94a3b8;
       font-size: 0.9rem;
+    }
+
+    @media (max-width: 800px) {
+      .card {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.3rem;
+      }
+
+      .content {
+        padding: 35px;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Python Payroll Calculator</h1>
-    <p>
-      A Python payroll calculator project built with Python, GitHub, and Streamlit.
-      Calculate overtime pay, taxes, deductions, net pay, and annual salary estimates.
-    </p>
+  <main class="card">
+    <section class="content">
+      <div class="badge">Python • Streamlit • GitHub</div>
 
-    <a class="button" href="https://github.com/bonillasteven/python-payroll-calculator" target="_blank">
-      View GitHub Repository
-    </a>
+      <h1>Python Payroll <span class="highlight">Calculator</span></h1>
 
-    <a class="button" href="https://python-payroll-calculator-bifa9nhs3dp5qz8dbbyaet.streamlit.app/">
-      Use Live Payroll Calculator
-    </a>
+      <p>
+        A real-world Python project that calculates overtime pay, payroll deductions,
+        net pay, and annual salary estimates. Built to practice Python fundamentals
+        and show hands-on programming skills.
+      </p>
 
-    <div class="footer">
-      Built by Steven Bonilla
-    </div>
-  </div>
+      <div class="features">
+        <div class="feature">✓ Gross pay calculation</div>
+        <div class="feature">✓ Overtime pay</div>
+        <div class="feature">✓ Tax deductions</div>
+        <div class="feature">✓ Annual estimates</div>
+      </div>
+
+      <div class="buttons">
+        <a class="button" href="https://python-payroll-calculator-bifa9nhs3dp5qz8dbbyaet.streamlit.app/" target="_blank">
+          Use Live App
+        </a>
+        <a class="button secondary" href="https://github.com/bonillasteven/python-payroll-calculator" target="_blank">
+          View GitHub Code
+        </a>
+      </div>
+
+      <div class="footer">Built by Steven Bonilla</div>
+    </section>
+
+    <section class="visual">
+      <div class="paycheck">
+        <h2>Pay Summary</h2>
+        <div class="line"><span>Hours</span><strong>45</strong></div>
+        <div class="line"><span>Rate</span><strong>$25/hr</strong></div>
+        <div class="line"><span>Overtime</span><strong>$187.50</strong></div>
+        <div class="line"><span>Deductions</span><strong>-$296.88</strong></div>
+        <div class="total">Net Pay: $890.62</div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
